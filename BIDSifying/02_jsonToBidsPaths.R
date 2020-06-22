@@ -13,6 +13,7 @@
 #  
 # ---------------- ----------------- ------------------- ---------------------- --------------------------
 # For questions contact: Ian J. Douglas, idouglas@utexas.edu; idmail92@gmail.com; ijd2109@columbia.edu
+# Check for updates at https://github.com/ijd2109/Utilities/tree/master/BIDSifying
 # -------------------------- ---------------------- ------------------- ----------------- ----------------
 # This script was written with R version 3.6.1, tested on 4.0.0 (works).
 # Written with tidyverse version 1.3.0 

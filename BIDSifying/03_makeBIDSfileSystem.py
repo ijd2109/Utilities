@@ -10,6 +10,7 @@
 #
 # ---------------- ----------------- ------------------- ---------------------- --------------------------
 # For questions contact: Ian J. Douglas, idouglas@utexas.edu; idmail92@gmail.com; ijd2109@columbia.edu
+# Check for updates at https://github.com/ijd2109/Utilities/tree/master/BIDSifying
 # -------------------------- ---------------------- ------------------- ----------------- ----------------
 #
 
@@ -94,4 +95,3 @@ for i in range(jsonPathList):
         f.close()
 # done.
 # Bidsifying done!! You are ready to run the BIDS-validator: https://bids-standard.github.io/bids-validator/
-        

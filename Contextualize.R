@@ -17,8 +17,8 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
       list(before = do.call(paste, as.list(before)), 
            after = do.call(paste, as.list(after)), 
            word = W,
-           WC_before = length(before),
-           WC_after = length(after))
+           WC_before = ifelse(is.na(before), NA, length(before)),
+           WC_after = ifelse(is.na(after), NA, length(before)))
     })
   })
 }
@@ -28,7 +28,8 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
 # Supply to the first argument (data) the data frame containing:
 #### A column containing all of the text entries on each subsequent row. (this could be 1 row)
 # column_index can be the name of that column, or it's position in the data frame (first column = 1, etc.)
-# word: the word for which you wish to return the surrounding N words
+# word: the word for which you wish to return the surrounding N words.
+##### `word` can also be a vector or list of words, such as c('he', 'she') or list('he', 'she')
 # N: the number around each word you wish to return
 # if drop_stop_words is TRUE, then you can also ignore stop words in the output. Note,
 # if your word of choice IS a stop word, then you will get no results.
@@ -36,7 +37,7 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
 # Example
 # text_entry1 = "WordA wordB wordC wordD wordE wordF target wordH wordI wordJ wordK wordL wordM"
 # text_entry2 = "WordA wordB wordC wordD wordE wordF target wordH wordI wordJ wordK wordL wordM"
-
+# 
 # df <- data.frame(TextEntries = c(text_entry1, text_entry2))
 # df
 #                                                                      TextEntries

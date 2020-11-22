@@ -6,6 +6,7 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
 {
   if(!require(tidytext)) {stop('The tidytext package is required. run `install.packages("tidytext"); library(tidytext)` and try again')}
   if(!require(magrittr)) {stop('The magrittr package is required. run `install.packages("magrittr"); library(magrittr)` and try again')}
+  if(!require(purrr)) {stop('The purrr package is required. run `install.packages("purrr"); library(purrr)` and try again')}
   corpus = data.frame(txt = do.call(paste, as.list(data[, column_index])),
                       stringsAsFactors = F)
   tokens = unnest_tokens(corpus, word, txt)

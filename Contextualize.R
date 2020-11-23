@@ -7,21 +7,25 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
   if(!require(tidytext)) {stop('The tidytext package is required. run `install.packages("tidytext"); library(tidytext)` and try again')}
   if(!require(magrittr)) {stop('The magrittr package is required. run `install.packages("magrittr"); library(magrittr)` and try again')}
   if(!require(purrr)) {stop('The purrr package is required. run `install.packages("purrr"); library(purrr)` and try again')}
+  if(!require(tibble)) {stop('The tibble package is required. run `install.packages("tibble"); library(tibble)` and try again')}
   corpus = data.frame(txt = do.call(paste, as.list(data[, column_index])),
                       stringsAsFactors = F)
   tokens = unnest_tokens(corpus, word, txt)
   if (drop_stop_words) {tokens = tokens %>% anti_join(stop_words)}
-  map_dfr(word, function(W) {
-    map_dfr(grep(paste0('^', tolower(W), '$'), tokens$word), ~{
-      if (.x > 1) {before = tokens$word[(max(.x - N, 0)) : (.x - 1)]} else before = NA
-      if (.x != nrow(tokens)) {after = tokens$word[(.x + 1) : min(.x + N, nrow(tokens))]} else after = NA
-      list(before = do.call(paste, as.list(before)), 
-           after = do.call(paste, as.list(after)), 
-           word = W,
-           WC_before = ifelse(is.na(before), NA, length(before)),
-           WC_after = ifelse(is.na(after), NA, length(before)))
-    })
-  })
+  reduce(purrr::map(word, function(W) {
+    reduce(purrr::map(grep(paste0('^', tolower(W), '$'), tokens$word), ~{
+      if (.x > 1) {before = as.vector(unlist(tokens$word))[(max(.x - N, 0)) : (.x - 1)]} else before = NA
+      if (.x != nrow(tokens)) {after = as.vector(unlist(tokens$word))[(.x + 1) : min(.x + N, nrow(tokens))]} else after = NA
+      assign('bef', before, pos = .GlobalEnv)
+      assign('aft', after, pos = .GlobalEnv)
+      data.frame(before = do.call(paste, as.list(before)), 
+                 after = do.call(paste, as.list(after)), 
+                 word = W,
+                 WC_before = if (is.na(before) && length(before) == 1) {NA} else length(before),
+                 WC_after = if (is.na(after) && length(after) == 1) {NA} else length(after),
+                 stringsAsFactors = F)
+    }), rbind)
+  }), rbind) %>% as.data.frame %>% remove_rownames
 }
 
 # 2. Run the function as follows:

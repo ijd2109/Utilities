@@ -11,8 +11,11 @@ Contextualize = function(data, column_index, word, N = 10, drop_stop_words = FAL
   corpus = data.frame(txt = do.call(paste, as.list(data[, column_index])),
                       stringsAsFactors = F)
   tokens = unnest_tokens(corpus, word, txt)
-  if (drop_stop_words) {tokens = tokens %>% anti_join(stop_words)}
   reduce(purrr::map(word, function(W) {
+    if (drop_stop_words) {
+      tokens = tokens %>% 
+        anti_join(stop_words[!grepl(paste0('^', tolower(W), '$'), stop_words$word), ], by = 'word')
+    }
     reduce(purrr::map(grep(paste0('^', tolower(W), '$'), tokens$word), ~{
       if (.x > 1) {before = as.vector(unlist(tokens$word))[(max(.x - N, 0)) : (.x - 1)]} else before = NA
       if (.x != nrow(tokens)) {after = as.vector(unlist(tokens$word))[(.x + 1) : min(.x + N, nrow(tokens))]} else after = NA

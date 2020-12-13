@@ -1,0 +1,17 @@
+---
+title: "plotting_theme"
+output: html_document
+---
+```{r}
+my_theme <- theme(panel.border = element_rect(color = 'black', fill = NA, size = .9), 
+                  panel.background = element_rect(color = 'black', fill = 'white'), 
+                  panel.grid = element_line(color = 'lightgrey', size = .2), 
+                  plot.background = element_rect(color = 'white', fill = 'white'), 
+                  axis.text.x = element_blank(), 
+                  axis.ticks.x = element_blank(), 
+                  plot.title = element_text(hjust = .5), 
+                  plot.title.position = 'plot',
+                  axis.text.y = element_text(size = 12),
+                  axis.title.y = element_text(size = 14))
+```
+
